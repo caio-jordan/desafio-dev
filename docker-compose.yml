@@ -1,0 +1,6 @@
+services:
+  desafio-dev.api:
+    image: ${DOCKER_REGISTRY-}desafiodevapi
+    build:
+      context: .
+      dockerfile: desafio-dev.API/Dockerfile
