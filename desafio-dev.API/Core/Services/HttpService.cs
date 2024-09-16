@@ -29,6 +29,11 @@ public class HttpService : IHttpService
 
             var result = await httpClient.SendAsync(request);
 
+            if (!result.IsSuccessStatusCode)
+            {
+                return null;
+            }
+
             var responseContent = await result.Content.ReadAsStringAsync();
 
             var responseResult = ValidateResponseContent(responseContent);
@@ -57,6 +62,11 @@ public class HttpService : IHttpService
 
             var result = await httpClient.SendAsync(request);
 
+            if (!result.IsSuccessStatusCode)
+            {
+                return null;
+            }
+
             var responseContent = await result.Content.ReadAsStringAsync();
 
             var responseResult = ValidateResponseContent(responseContent);
@@ -66,7 +76,6 @@ public class HttpService : IHttpService
                 return null;
             }
 
-            Console.WriteLine($"aaaa{responseResult}");
 
             return responseContent.Equals("{ }") ? null : JsonSerializer.Deserialize<WeatherForecastModel>(responseContent, _jsonOptions);
 

@@ -45,7 +45,6 @@ public class Service : IService
     public async Task<List<WeatherModel>?> GetHistoricoAsync()
     {
         return  await _weatherRepository.GetCacheAsync();
-
     }
 
     public async Task<int> DeleteCache()
