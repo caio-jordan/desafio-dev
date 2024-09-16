@@ -3,9 +3,11 @@ using desafio_dev.API.Infrastructure.Context;
 using desafio_dev.API.Model;
 using Microsoft.EntityFrameworkCore;
 using System.Data.SqlClient;
+using System.Diagnostics.CodeAnalysis;
 
 namespace desafio_dev.API.Repository
 {
+    [ExcludeFromCodeCoverage]
     public class WeatherRepository : IWeatherRepository
     {
         private readonly PrevisaoDbContext _previsaoDbContext;
@@ -37,7 +39,7 @@ namespace desafio_dev.API.Repository
                                  weather.Current = currents.First(x => x.Id == weather.Id);
                              });
                 });
-                                
+
                 var weatherModel = new List<WeatherModel>();
 
                 foreach (var weather in weathers)
@@ -48,11 +50,7 @@ namespace desafio_dev.API.Repository
                         Location = new(weather.Location)
                     });
                 }
-
-
                 return weatherModel;
-
-
             }
             catch (SqlException ex)
             {

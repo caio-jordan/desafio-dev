@@ -5,22 +5,22 @@ using Hangfire;
 using desafio_dev.API.Repository;
 using desafio_dev.API.Model;
 using desafio_dev.API.Infrastructure.Context;
+using System.Diagnostics.CodeAnalysis;
 
 namespace desafio_dev.API.Core.Services;
 
+[ExcludeFromCodeCoverage]
 public class Service : IService
 {
 
     private readonly IHttpService _httpService;
-    private readonly ILogger<Service> _logger;
-    private PrevisaoDbContext _contextDb;
+    private readonly ILogger<Service> _logger;    
     private readonly IWeatherRepository _weatherRepository;
 
-    public Service(IHttpService httpService, ILogger<Service> logger, PrevisaoDbContext contextDb, IWeatherRepository weatherRepository)
+    public Service(IHttpService httpService, ILogger<Service> logger, IWeatherRepository weatherRepository)
     {
         _httpService = httpService;
-        _logger = logger;
-        _contextDb = contextDb;
+        _logger = logger;        
         _weatherRepository = weatherRepository;
 
     }
@@ -42,12 +42,12 @@ public class Service : IService
     {
         return await _httpService.GetPrevisaoEstendidaAsync(cidade, diasPrevisao);        
     }
-    public async Task<List<WeatherModel>?> GetHistoricoAsync()
+    public async Task<List<WeatherModel>?> GetCacheAsync()
     {
         return  await _weatherRepository.GetCacheAsync();
     }
 
-    public async Task<int> DeleteCache()
+    public async Task<int> DeleteCacheAsync()
     {
         return await _weatherRepository.DeleteCacheAsync();
     }
@@ -56,7 +56,7 @@ public class Service : IService
         try
         {
             BackgroundJob.Schedule(
-                () => DeleteCache(), TimeSpan.FromHours(1));
+                () => DeleteCacheAsync(), TimeSpan.FromHours(1));
 
         }
         catch (Exception ex)

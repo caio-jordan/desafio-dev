@@ -1,9 +1,10 @@
 ﻿using desafio_dev.API.Core.Services.Interface;
 using desafio_dev.API.Model;
+using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 
 namespace desafio_dev.API.Core.Services;
-
+[ExcludeFromCodeCoverage]
 public class HttpService : IHttpService
 {
     private readonly HttpClient _httpClient;

@@ -1,8 +1,10 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Text.Json.Serialization;
 using desafio_dev.API.Domain;
 
 namespace desafio_dev.API.Model
 {
+    [ExcludeFromCodeCoverage]
     public class DayModel
     {
         [JsonPropertyName("maxtemp_c")]

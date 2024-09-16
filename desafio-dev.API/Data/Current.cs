@@ -1,8 +1,10 @@
 ﻿using desafio_dev.API.Model;
+using System.Diagnostics.CodeAnalysis;
 using System.Text.Json.Serialization;
 
 namespace desafio_dev.API.Domain
 {
+    [ExcludeFromCodeCoverage]
     public class Current
     {
         public Current()

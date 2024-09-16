@@ -1,7 +1,9 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Text.Json.Serialization;
 
 namespace desafio_dev.API.Model
 {
+    [ExcludeFromCodeCoverage]
     public class ForecastDayModel
     {
         public string Date { get; set; }

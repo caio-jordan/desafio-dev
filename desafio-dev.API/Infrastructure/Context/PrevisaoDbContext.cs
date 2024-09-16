@@ -1,9 +1,11 @@
 ﻿using desafio_dev.API.Domain;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics.CodeAnalysis;
 
 
 namespace desafio_dev.API.Infrastructure.Context
 {
+    [ExcludeFromCodeCoverage]
     public class PrevisaoDbContext : DbContext
     {
 
