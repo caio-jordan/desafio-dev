@@ -1,5 +1,5 @@
 ﻿using desafio_dev.API.Core.Services.Interface;
-using desafio_dev.API.Domain;
+using desafio_dev.API.Model;
 using System.Text.Json;
 
 namespace desafio_dev.API.Core.Services;
@@ -19,11 +19,11 @@ public class HttpService : IHttpService
         _jsonOptions = new JsonSerializerOptions() { PropertyNameCaseInsensitive = true };
     }
 
-    public async Task<WeatherResponse?> GetPrevisaoAtualAsync(string cidade)
+    public async Task<WeatherModel?> GetPrevisaoAtualAsync(string cidade)
     {
         try
         {
-            using var httpClient = _httpClientFactory.CreateClient(nameof(WeatherResponse));
+            using var httpClient = _httpClientFactory.CreateClient(nameof(WeatherModel));
 
             var request = new HttpRequestMessage(HttpMethod.Get, $"current.json?key=56f99aed071d4672bed223559241009&q={cidade}&aqi=no");
 
@@ -38,7 +38,7 @@ public class HttpService : IHttpService
                 return null;
             }
 
-            return JsonSerializer.Deserialize<WeatherResponse>(responseResult, _jsonOptions);
+            return JsonSerializer.Deserialize<WeatherModel>(responseResult, _jsonOptions);
         }
         catch (Exception ex)
         {
@@ -47,11 +47,11 @@ public class HttpService : IHttpService
         }
 
     }
-    public async Task<WeatherForecastResponse?> GetPrevisaoEstendidaAsync(string cidade, int diasPrevisao = 1)
+    public async Task<WeatherForecastModel?> GetPrevisaoEstendidaAsync(string cidade, int diasPrevisao = 1)
     {
         try
         {
-            using var httpClient = _httpClientFactory.CreateClient(nameof(WeatherForecastResponse));
+            using var httpClient = _httpClientFactory.CreateClient(nameof(WeatherForecastModel));
 
             var request = new HttpRequestMessage(HttpMethod.Get, $"forecast.json?q={cidade}&days={diasPrevisao}&key=56f99aed071d4672bed223559241009");
 
@@ -68,7 +68,7 @@ public class HttpService : IHttpService
 
             Console.WriteLine($"aaaa{responseResult}");
 
-            return responseContent.Equals("{ }") ? null : JsonSerializer.Deserialize<WeatherForecastResponse>(responseContent, _jsonOptions);
+            return responseContent.Equals("{ }") ? null : JsonSerializer.Deserialize<WeatherForecastModel>(responseContent, _jsonOptions);
 
         }
         catch (Exception ex)

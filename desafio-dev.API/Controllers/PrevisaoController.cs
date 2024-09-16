@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using desafio_dev.API.Core.Services.Interface;
 
-using desafio_dev.API.Repository;
-
 namespace desafio_dev.API.Controllers;
 
 [Route("api/[controller]")]
@@ -10,8 +8,6 @@ namespace desafio_dev.API.Controllers;
 public class PrevisaoController : ControllerBase
 {
     private readonly IService _service;
-    
-
     public PrevisaoController(IService httpService)
     {
         _service = httpService;
@@ -31,12 +27,11 @@ public class PrevisaoController : ControllerBase
         return result is null ? NoContent() : Ok(result);
     }
 
-
     [HttpGet("historicoPrevisao")]
     public async Task<IActionResult> GetHistoricoPrevisao()
     {
         var weatherHistory = await _service.GetHistoricoAsync();
-        return weatherHistory is null ? NoContent() : Ok(weatherHistory);
+        return weatherHistory.Any() ? Ok(weatherHistory) : NoContent();
     }
 
     [HttpDelete]
@@ -45,7 +40,6 @@ public class PrevisaoController : ControllerBase
         var result = await _service.DeleteCache();
         return Ok(result);
     }
-
 
 }
 

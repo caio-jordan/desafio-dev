@@ -1,5 +1,8 @@
 
 using desafio_dev.API.Core.IoC;
+using desafio_dev.API.Infrastructure.Context;
+using Hangfire;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +13,11 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddInitServices();
+
+var conn = builder.Configuration.GetConnectionString("DefaultConnection");
+
+builder.Services.AddDbContext<PrevisaoDbContext>(options =>
+options.UseNpgsql(conn));
 
 var app = builder.Build();
 

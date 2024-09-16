@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "desafio-dev.API", "desafio-
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{95B7F016-289F-482E-9833-A8F1E3EA7D6A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "desafio-dev-Tests", "test\desafio-dev-Tests\desafio-dev-Tests.csproj", "{AE0ED339-89CF-4BDF-92B4-FBE226D52596}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "desafio-dev-Tests", "test\desafio-dev-Tests\desafio-dev-Tests.csproj", "{AE0ED339-89CF-4BDF-92B4-FBE226D52596}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,8 +1,9 @@
 ﻿using System.Text.Json.Serialization;
+using desafio_dev.API.Domain;
 
-namespace desafio_dev.API.Domain
+namespace desafio_dev.API.Model
 {
-    public class Day
+    public class DayModel
     {
         [JsonPropertyName("maxtemp_c")]
         public double MaxtempC { get; set; }

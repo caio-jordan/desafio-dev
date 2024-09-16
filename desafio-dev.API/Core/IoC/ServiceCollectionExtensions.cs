@@ -7,10 +7,11 @@ using System.Diagnostics.CodeAnalysis;
 using System.Net.Http.Headers;
 using System.Security.Authentication;
 using System.Text.Json.Serialization;
-using Polly.NoOp;
 using desafio_dev.API.Core.Services.Interface;
 using desafio_dev.API.Core.Services;
-using desafio_dev.API.Domain;
+using Hangfire;
+using desafio_dev.API.Repository;
+using desafio_dev.API.Model;
 
 namespace desafio_dev.API.Core.IoC;
 
@@ -22,6 +23,13 @@ public static class ServiceCollectionExtensions
 
         services.AddTransient<IHttpService, HttpService>();
         services.AddTransient<IService, Service>();
+
+        services.AddScoped<IWeatherRepository, WeatherRepository>();
+
+        GlobalConfiguration.Configuration        
+        .UseSimpleAssemblyNameTypeSerializer()
+        .UseRecommendedSerializerSettings()
+        .UseSqlServerStorage("Database=Hangfire.Sample; Integrated Security=True;");
 
         services.AddRouting(options => options.LowercaseUrls = true);
         services.AddHttpCustomServices();
@@ -38,6 +46,7 @@ public static class ServiceCollectionExtensions
             ServerCertificateCustomValidationCallback =
                 (httpRequestMessage, cert, cetChain, policyErrors) => true
         });
+        
     }
 
     private static void AddHttpCustomServices(this IServiceCollection services)
@@ -55,7 +64,7 @@ public static class ServiceCollectionExtensions
 
     private static void AddPrevisaoAtualService(this IServiceCollection services)
     {
-        services.AddHttpClient(nameof(WeatherResponse), c =>
+        services.AddHttpClient(nameof(WeatherModel), c =>
         {
             c.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             c.BaseAddress = new Uri("http://api.weatherapi.com/v1/");
@@ -72,7 +81,7 @@ public static class ServiceCollectionExtensions
 
     private static void AddPrevisaoEstendidaService(this IServiceCollection services)
     {
-        services.AddHttpClient(nameof(WeatherForecastResponse), c =>
+        services.AddHttpClient(nameof(WeatherForecastModel), c =>
         {
             c.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             c.BaseAddress = new Uri("http://api.weatherapi.com/v1/");

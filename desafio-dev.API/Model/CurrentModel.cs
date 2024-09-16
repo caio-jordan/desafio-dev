@@ -1,11 +1,28 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿
+using desafio_dev.API.Domain;
 using System.Text.Json.Serialization;
 
-namespace desafio_dev.API.Domain
+namespace desafio_dev.API.Model
 {
-    public class Current
+    public class CurrentModel
     {
-        [Key]
+        public CurrentModel()
+        {
+            
+        }
+        public CurrentModel(Current current)
+        {
+            Id = current.Id;
+            LastUpdated = current.LastUpdated;
+            LastUpdatedEpoch = current.LastUpdatedEpoch;
+            TempC = current.TempC;
+            TempF = current.TempF;
+            IsDay = current.IsDay;
+            WindMph = current.WindMph;
+            WindDegree = current.WindDegree;
+            PressureMb = current.PressureMb;            
+        }
+        [JsonIgnore]
         public int Id { get; set; }
         [JsonPropertyName("last_updated_epoch")]
         public decimal LastUpdatedEpoch { get; set; }
@@ -16,16 +33,13 @@ namespace desafio_dev.API.Domain
         [JsonPropertyName("temp_f")]
         public float TempF { get; set; }
         [JsonPropertyName("is_day")]
-        public int IsDay { get; set; }
-        public Condition Condition { get; set; }
+        public int IsDay { get; set; }        
         [JsonPropertyName("wind_mph")]
         public float WindMph { get; set; }
         [JsonPropertyName("wind_kph")]
         public float WindKph { get; set; }
         [JsonPropertyName("wind_degree")]
         public int WindDegree { get; set; }
-        [JsonPropertyName("wind_dir")]
-        public string WindDir { get; set; }
         [JsonPropertyName("pressure_mb")]
         public float PressureMb { get; set; }
     }
