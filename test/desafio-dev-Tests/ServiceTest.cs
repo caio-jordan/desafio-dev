@@ -2,12 +2,9 @@ using Autofac.Extras.Moq;
 using AutoFixture;
 using desafio_dev.API.Core.Services;
 using desafio_dev.API.Core.Services.Interface;
-using desafio_dev.API.Domain;
-using desafio_dev.API.Infrastructure.Context;
 using desafio_dev.API.Model;
 using desafio_dev.API.Repository;
 using FluentAssertions;
-using Microsoft.EntityFrameworkCore;
 using Moq;
 
 namespace desafio_dev_Tests

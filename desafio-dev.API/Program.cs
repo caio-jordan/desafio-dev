@@ -1,7 +1,6 @@
 
 using desafio_dev.API.Core.IoC;
 using desafio_dev.API.Infrastructure.Context;
-using Hangfire;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);

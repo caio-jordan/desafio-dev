@@ -1,5 +1,4 @@
-﻿using desafio_dev.API.Domain;
-using desafio_dev.API.Model;
+﻿using desafio_dev.API.Model;
 
 namespace desafio_dev.API.Repository
 {

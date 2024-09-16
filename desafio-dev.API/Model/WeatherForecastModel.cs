@@ -1,5 +1,4 @@
-﻿using desafio_dev.API.Domain;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
 
 namespace desafio_dev.API.Model
 {

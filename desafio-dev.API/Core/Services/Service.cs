@@ -1,10 +1,7 @@
 ﻿using desafio_dev.API.Core.Services.Interface;
-using desafio_dev.API.Domain;
-using Microsoft.EntityFrameworkCore;
 using Hangfire;
 using desafio_dev.API.Repository;
 using desafio_dev.API.Model;
-using desafio_dev.API.Infrastructure.Context;
 using System.Diagnostics.CodeAnalysis;
 
 namespace desafio_dev.API.Core.Services;
