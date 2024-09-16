@@ -5,6 +5,6 @@ public interface IService
 {
     Task<WeatherResponse?> GetPrevisaoAtualAsync(string cidade);
     Task<WeatherForecastResponse?> GetPrevisaoEstendidaAsync(string cidade, int diasPrevisao = 1);
-    //Task<HistoricoData> GetHistoricoAsync();
+    Task<List<WeatherData?>> GetHistoricoAsync();
     Task<int> DeleteCache();
 }

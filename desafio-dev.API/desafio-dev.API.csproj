@@ -31,7 +31,6 @@
   <ItemGroup>
     <Folder Include="Domain\" />
     <Folder Include="Core\" />
-    <Folder Include="Repository\" />
   </ItemGroup>
 
 </Project>

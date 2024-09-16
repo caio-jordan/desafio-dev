@@ -1,5 +1,7 @@
 ﻿using desafio_dev.API.Core.Services.Interface;
 using desafio_dev.API.Domain;
+using desafio_dev.API.Repository;
+using Microsoft.EntityFrameworkCore;
 
 namespace desafio_dev.API.Core.Services;
 
@@ -8,6 +10,7 @@ public class Service : IService
 
     private readonly IHttpService _httpService;
     private readonly ILogger<Service> _logger;
+    private PrevisaoDbContext _contextDb;
 
     public Service(IHttpService httpService, ILogger<Service> logger)
     {
@@ -37,8 +40,6 @@ public class Service : IService
         {
             var responsePrevisaoEstendida = await _httpService.GetPrevisaoEstendidaAsync(cidade, diasPrevisao);
 
-
-
             return responsePrevisaoEstendida;
         }
         catch (Exception ex)
@@ -50,6 +51,30 @@ public class Service : IService
 
     public async Task<int> DeleteCache()
     {
-        return 1;
+        try
+        {
+            var weatherData = await _contextDb.WeatherData.ExecuteDeleteAsync();
+            return weatherData;
+            
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex.Message);
+            return 0;
+        }
+    }
+
+    public async Task<List<WeatherData>?> GetHistoricoAsync()
+    {
+        try
+        {
+            return await _contextDb.WeatherData.ToListAsync();            
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex.Message);
+            return await Task.FromResult(default(List<WeatherData>));
+        }
+        
     }
 }

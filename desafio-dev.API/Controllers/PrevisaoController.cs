@@ -10,7 +10,7 @@ namespace desafio_dev.API.Controllers;
 public class PrevisaoController : ControllerBase
 {
     private readonly IService _service;
-    private PrevisaoDbContext _contextDb;
+    
 
     public PrevisaoController(IService httpService)
     {
@@ -35,8 +35,8 @@ public class PrevisaoController : ControllerBase
     [HttpGet("historicoPrevisao")]
     public async Task<IActionResult> GetHistoricoPrevisao()
     {
-        var users = _contextDb.WeatherData.ToList();
-        return Ok(users);
+        var weatherHistory = await _service.GetHistoricoAsync();
+        return weatherHistory is null ? NoContent() : Ok(weatherHistory);
     }
 
     [HttpDelete]
