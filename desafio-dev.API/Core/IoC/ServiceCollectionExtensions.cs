@@ -12,6 +12,7 @@ using desafio_dev.API.Core.Services;
 using Hangfire;
 using desafio_dev.API.Repository;
 using desafio_dev.API.Model;
+using Hangfire.MemoryStorage;
 
 namespace desafio_dev.API.Core.IoC;
 
@@ -19,17 +20,23 @@ namespace desafio_dev.API.Core.IoC;
 public static class ServiceCollectionExtensions
 {
     public static void AddInitServices(this IServiceCollection services)
-    {
-
+    {        
         services.AddTransient<IHttpService, HttpService>();
         services.AddTransient<IService, Service>();
-
         services.AddScoped<IWeatherRepository, WeatherRepository>();
 
-        GlobalConfiguration.Configuration        
-        .UseSimpleAssemblyNameTypeSerializer()
-        .UseRecommendedSerializerSettings()
-        .UseSqlServerStorage("Database=Hangfire.Sample; Integrated Security=True;");
+
+        //Configuracao do hangfire, como task background
+        services.AddHangfire(configuration => configuration
+                .UseRecommendedSerializerSettings().UseMemoryStorage()
+                );
+
+        GlobalJobFilters.Filters.Add(new AutomaticRetryAttribute
+        {
+            Attempts = 3,
+            DelaysInSeconds = new int[] { 300 }
+        });        
+        services.AddHangfireServer();
 
         services.AddRouting(options => options.LowercaseUrls = true);
         services.AddHttpCustomServices();
@@ -47,6 +54,8 @@ public static class ServiceCollectionExtensions
                 (httpRequestMessage, cert, cetChain, policyErrors) => true
         });
         
+
+
     }
 
     private static void AddHttpCustomServices(this IServiceCollection services)
@@ -58,7 +67,6 @@ public static class ServiceCollectionExtensions
             .AddJsonOptions(options =>
             {
                 options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
-                //options.JsonSerializerOptions.WriteIndented = true;
             });
     }
 
@@ -94,7 +102,18 @@ public static class ServiceCollectionExtensions
                  (httpRequestMessage, cert, cetChain, policyErrors) => true
             })
          .AddPolicyHandler(CreatePolicy(services));
+    }    
+    public static void StartHangFire(this IServiceCollection services)
+    {        
+        var serviceProvider = services.BuildServiceProvider();        
+
+        var weatherRepository = serviceProvider.GetService<IWeatherRepository>();
+        if (weatherRepository is not null)
+            BackgroundJob.Schedule(
+                 () => weatherRepository.DeleteCacheAsync(), TimeSpan.FromHours(1));
     }
+
+    //Aplicando politica de Retry
     private static AsyncPolicyWrap<HttpResponseMessage> CreatePolicy(IServiceCollection services)
     {
         var maxRetryAttempts = 3;

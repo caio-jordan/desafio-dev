@@ -11,13 +11,13 @@ public class Service : IService
 {
 
     private readonly IHttpService _httpService;
-    private readonly ILogger<Service> _logger;    
+    private readonly ILogger<Service> _logger;
     private readonly IWeatherRepository _weatherRepository;
 
     public Service(IHttpService httpService, ILogger<Service> logger, IWeatherRepository weatherRepository)
     {
         _httpService = httpService;
-        _logger = logger;        
+        _logger = logger;
         _weatherRepository = weatherRepository;
 
     }
@@ -37,28 +37,21 @@ public class Service : IService
     }
     public async Task<WeatherForecastModel?> GetPrevisaoEstendidaAsync(string cidade, int diasPrevisao = 1)
     {
-        return await _httpService.GetPrevisaoEstendidaAsync(cidade, diasPrevisao);        
+        return await _httpService.GetPrevisaoEstendidaAsync(cidade, diasPrevisao);
     }
     public async Task<List<WeatherModel>?> GetCacheAsync()
     {
-        return  await _weatherRepository.GetCacheAsync();
+        var weathers = await _weatherRepository.GetCacheAsync();
+
+        return weathers.Select(x => new WeatherModel()
+        {
+            Current = new(x.Current),
+            Location = new(x.Location)
+        }).ToList();
     }
 
     public async Task<int> DeleteCacheAsync()
     {
         return await _weatherRepository.DeleteCacheAsync();
     }
-    private void BackgroundJobCleanCache()
-    {
-        try
-        {
-            BackgroundJob.Schedule(
-                () => DeleteCacheAsync(), TimeSpan.FromHours(1));
-
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex.Message);
-        }
-    }
-}
+ }

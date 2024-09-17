@@ -19,38 +19,11 @@ namespace desafio_dev.API.Repository
             _logger = logger;
 
         }
-        public async Task<List<WeatherModel?>> GetCacheAsync()
+        public async Task<List<Weather>> GetCacheAsync()
         {
             try
             {
-                var currents = await _previsaoDbContext.Current.ToListAsync();
-
-                var locations = await _previsaoDbContext.Location.ToListAsync();
-
-                var weathers = await _previsaoDbContext.Weather.ToListAsync();
-
-                weathers.ForEach(weather =>
-                {
-                    locations.Where(location => location.Id == weather.Id)
-                             .ToList()
-                             .ForEach(location =>
-                             {
-                                 weather.Location = location;
-                                 weather.Current = currents.First(x => x.Id == weather.Id);
-                             });
-                });
-
-                var weatherModel = new List<WeatherModel>();
-
-                foreach (var weather in weathers)
-                {
-                    weatherModel.Add(new WeatherModel()
-                    {
-                        Current = new (weather.Current),
-                        Location = new(weather.Location)
-                    });
-                }
-                return weatherModel;
+                return await _previsaoDbContext.Weather.Include(x =>x .Location).Include(y=>y.Current).ToListAsync();               
             }
             catch (SqlException ex)
             {
