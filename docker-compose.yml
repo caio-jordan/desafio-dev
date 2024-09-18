@@ -1,6 +1,37 @@
-services:
-  desafio-dev.api:
-    image: ${DOCKER_REGISTRY-}desafiodevapi
+version: '3.4'
+
+networks:
+  dev:
+    driver: bridge
+services:    
+  desafio-dev:
+    image: ${DOCKER_REGISTRY-}desafio-dev
+    depends_on:
+        - "app_db"
+    container_name: appdemo-service
+    ports:
+        - "8080:80"
     build:
-      context: .
-      dockerfile: desafio-dev.API/Dockerfile
+        context: .
+        dockerfile: Dockerfile
+    environment:
+        - ConnectionStrings__DefaultConnection=Host=localhost;Port=5432;User ID=postgres;Password=admin;Database=postgres;Server=app_db;
+        - ASPNETCORE_URLS=http://+:80
+    networks:
+        - dev
+  app_db:
+    image: postgres:latest
+    container_name: app_db
+    environment:
+        - POSTGRES_USER=postgres
+        - POSTGRES_PASSWORD=admin
+        - POSTGRES_DB=postgres 
+    ports:
+        - "5433:5432"
+    restart: always
+    volumes:
+        - app_data:/var/lib/postgresql/data
+    networks:
+      - dev
+volumes:
+  app_data:
