@@ -4,7 +4,7 @@
 Fui desafiado a criar uma aplicação que consulta a previsão tanto atual quanto futura utilizando o https://www.weatherapi.com, e também um serviço que rode em background para cada uma hora limpe todo o cache.
 
 
-
+[![Build Status](https://app.travis-ci.com/caio-jordan/MinimalApi.API.svg?token=x3m7RGGS2zZfTm7Js9gs)](https://app.travis-ci.com/caio-jordan/MinimalApi.API)
 
 ## Referência
 
