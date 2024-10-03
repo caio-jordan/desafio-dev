@@ -1,8 +1,8 @@
+language: generic
 sudo: required
-dist: bionic
-language: csharp
-mono: none
-dotnet: 8.0
+dist: noble
+before_script:
+  - sudo snap install dotnet-sdk --classic --channel 8.0/stable
 services: docker
 before_install:
  - cd desafio-dev/
