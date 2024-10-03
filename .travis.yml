@@ -5,7 +5,6 @@ before_script:
   - sudo snap install dotnet-sdk --classic --channel 8.0/stable
 services: docker
 before_install:
- - cd caio-jordan/desafio-dev/
  - echo "We are in the right folder!"
 script:
  - docker-compose build
